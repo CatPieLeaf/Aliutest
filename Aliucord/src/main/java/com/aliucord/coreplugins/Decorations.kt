@@ -2,6 +2,7 @@ package com.aliucord.coreplugins
 
 import android.content.Context
 import com.aliucord.coreplugins.decorations.DecorationsSettings
+import com.aliucord.coreplugins.decorations.displayname.DisplayNameStyles
 import com.aliucord.entities.CorePlugin
 import com.aliucord.patcher.*
 import com.aliucord.updater.ManagerBuild
@@ -25,13 +26,13 @@ internal class Decorations : CorePlugin(Manifest().apply {
     }
 
     override fun start(context: Context) {
-        if (!DecorationsSettings.enable) return
         if (!ManagerBuild.hasInjector("2.3.0") || !ManagerBuild.hasPatches("1.3.0")) {
             logger.warn("Base app outdated, cannot enable Decorations")
             return
         }
 
         patchFields()
+        DisplayNameStyles.patch(patcher)
     }
 
     override fun stop(context: Context) {
