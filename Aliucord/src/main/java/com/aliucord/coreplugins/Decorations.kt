@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.AttributeSet
 import com.aliucord.coreplugins.decorations.DecorationsSettings
 import com.aliucord.coreplugins.decorations.Decorator
+import com.aliucord.coreplugins.decorations.nameplate.NameplateDecorator
 import com.aliucord.entities.CorePlugin
 import com.aliucord.patcher.*
 import com.aliucord.updater.ManagerBuild
@@ -38,7 +39,7 @@ internal class Decorations : CorePlugin(Manifest().apply {
     @SuppressLint("BuildListAdds") // remove when there's stuff to add
     @OptIn(ExperimentalStdlibApi::class)
     private val decorators = buildList<Decorator> {
-        // if (DecorationsSettings.enableAvatarDecoration) add(AvatarDecorator())
+        if (DecorationsSettings.enableNameplates) add(NameplateDecorator())
     }
 
     override fun start(context: Context) {
