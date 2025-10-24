@@ -155,7 +155,7 @@ internal object DisplayNameStyles {
         patchMessageAuthor(patcher)
     }
 
-    private fun configureOn(view: TextView, styleData: DisplayNameStyle?) {
+    private fun configureOn(view: TextView, styleData: DisplayNameStyle?, applyEffect: Boolean) {
         defaultTypeface[view]?.let { view.typeface = it }
         listeners.remove(view)?.let { view.removeOnLayoutChangeListener(it) }
         view.paint.shader = null
@@ -173,31 +173,33 @@ internal object DisplayNameStyles {
             }
         }
 
-        when (effect) {
-            EffectStyle.Solid -> {}
-            EffectStyle.Toon,
-            EffectStyle.Pop,
-            EffectStyle.Neon -> {
-                view.setTextColor((styleData.colors[0] + 0xFF000000).toInt())
-            }
-            EffectStyle.Glow,
-            EffectStyle.Gradient -> {
-                val (from, to) = styleData.colors.map { (it + 0xFF000000).toInt() }
-                val list = OnLayoutChangeListener { v, left, top, right, bottom, _, _, _, _ ->
-                    if (v !is TextView)
-                        return@OnLayoutChangeListener
-                    v.paint.shader = LinearGradient(
-                        /* x0 */ 0f,
-                        /* y0 */ 0f,
-                        /* x1 */ right.toFloat() - left.toFloat(),
-                        /* y1 */ bottom.toFloat() - top.toFloat(),
-                        /* colorFrom */ from,
-                        /* colorTo */ to,
-                        Shader.TileMode.REPEAT
-                    )
+        if (applyEffect) {
+            when (effect) {
+                EffectStyle.Solid -> {}
+                EffectStyle.Toon,
+                EffectStyle.Pop,
+                EffectStyle.Neon -> {
+                    view.setTextColor((styleData.colors[0] + 0xFF000000).toInt())
                 }
-                view.addOnLayoutChangeListener(list)
-                listeners[view] = list
+                EffectStyle.Glow,
+                EffectStyle.Gradient -> {
+                    val (from, to) = styleData.colors.map { (it + 0xFF000000).toInt() }
+                    val list = OnLayoutChangeListener { v, left, top, right, bottom, _, _, _, _ ->
+                        if (v !is TextView)
+                            return@OnLayoutChangeListener
+                        v.paint.shader = LinearGradient(
+                            /* x0 */ 0f,
+                            /* y0 */ 0f,
+                            /* x1 */ right.toFloat() - left.toFloat(),
+                            /* y1 */ bottom.toFloat() - top.toFloat(),
+                            /* colorFrom */ from,
+                            /* colorTo */ to,
+                            Shader.TileMode.REPEAT
+                        )
+                    }
+                    view.addOnLayoutChangeListener(list)
+                    listeners[view] = list
+                }
             }
         }
     }
@@ -212,7 +214,7 @@ internal object DisplayNameStyles {
             val usernameView = binding.f
             val usernameTextView = usernameView.j.c
             val data = StoreStream.getUsers().users[member.userId]?.displayNameStyles
-            configureOn(usernameTextView, data)
+            configureOn(usernameTextView, data, false)
         }
     }
 
@@ -228,7 +230,7 @@ internal object DisplayNameStyles {
             state.user.displayNameStyles?.let {
                 logger.info("${state.user.username}: $it")
             }
-            configureOn(usernameTextView, state.user.displayNameStyles)
+            configureOn(usernameTextView, state.user.displayNameStyles, true)
         }
 
         // Remove the custom typeface if the user has display name styles, so it displays properly
@@ -258,7 +260,7 @@ internal object DisplayNameStyles {
         ) { (_, _: Int, entry: MessageEntry) ->
             val username = itemView.findViewById<TextView?>("chat_list_adapter_item_text_name")
                 ?: return@after
-            configureOn(username, entry.message.author.displayNameStyles)
+            configureOn(username, entry.message.author.displayNameStyles, false)
         }
 
         // Configures the guild tag for the reply preview
@@ -270,7 +272,7 @@ internal object DisplayNameStyles {
 
             val replyUsername = itemView.findViewById<TextView?>("chat_list_adapter_item_text_decorator_reply_name")
                 ?: return@before
-            configureOn(replyUsername, referencedAuthor?.displayNameStyles)
+            configureOn(replyUsername, referencedAuthor?.displayNameStyles, false)
         }
     }
 }
