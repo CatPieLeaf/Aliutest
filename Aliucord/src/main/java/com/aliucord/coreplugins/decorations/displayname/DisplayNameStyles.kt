@@ -43,7 +43,7 @@ enum class FontStyle(val url: String?, val isVariable: Boolean = false) {
     // -- Unused
     Bangers("$BASE_GFONTS/bangers/Bangers-Regular.ttf"),
     // Tempo
-    BioRhyme("$BASE_GFONTS/biorhyme/BioRhyme[wdth,wght].ttf", isVariable = true),
+    BioRhyme("$BASE_GFONTS/biorhyme/BioRhyme%5Bwdth,wght%5D.ttf", isVariable = true),
     // Sakura
     CherryBomb("$BASE_GFONTS/cherrybombone/CherryBombOne-Regular.ttf"),
     // Jellybean
@@ -51,11 +51,11 @@ enum class FontStyle(val url: String?, val isVariable: Boolean = false) {
     // -- Unused
     Compagnon("https://gitlab.com/velvetyne/compagnon/-/raw/4f2344df5adb6eaf9ffd9215c5406c0729fb7aa1/fonts/Compagnon-Medium.otf?inline=false"),
     // Modern
-    MuseoModerno("$BASE_GFONTS/museomoderno/MuseoModerno[wght].ttf", isVariable = true),
+    MuseoModerno("$BASE_GFONTS/museomoderno/MuseoModerno%5Bwght%5D.ttf", isVariable = true),
     // Medieval
     NeoCastel("https://files.catbox.moe/npwf2e.otf"),
     // 8Bit
-    Pixelify("$BASE_GFONTS/pixelifysans/PixelifySans[wght].ttf", isVariable = true),
+    Pixelify("$BASE_GFONTS/pixelifysans/PixelifySans%5Bwght%5D.ttf", isVariable = true),
     // -- Unused
     Ribes("https://github.com/collletttivo/ribes/raw/e5f58f6ef719ff69b599a3155c66f4cecaed0a0f/fonts/Ribes-Black.otf"),
     // Vampyre
