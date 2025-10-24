@@ -8,6 +8,7 @@ import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.view.View.OnLayoutChangeListener
 import android.widget.TextView
+import androidx.core.graphics.TypefaceCompat
 import com.aliucord.*
 import com.aliucord.api.PatcherAPI
 import com.aliucord.coreplugins.decorations.DecorationsSettings
@@ -127,10 +128,11 @@ internal object FontHandler {
                 }
                 logger.info("fetched $style to $path")
                 val typeface = Typeface.createFromFile(path)
+                // If we get androidx core 1.9.0 we can use TypefaceCompat.create with a weight
                 if (style.isVariable && Build.VERSION.SDK_INT >= 28) {
-                    subject.onNext(Typeface.create(typeface, 700, false))
+                    subject.onNext(Typeface.create(typeface, 500, false))
                 } else {
-                    subject.onNext(typeface)
+                    subject.onNext(TypefaceCompat.create(Utils.appContext, typeface, Typeface.BOLD))
                 }
             }
             subject
