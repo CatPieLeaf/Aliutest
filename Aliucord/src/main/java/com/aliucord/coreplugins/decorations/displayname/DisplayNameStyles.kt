@@ -33,6 +33,8 @@ import rx.subjects.BehaviorSubject
 import java.io.File
 import java.util.WeakHashMap
 
+private val logger = Logger("Decorations/DisplayNameStyles")
+
 private val ChannelMembersListViewHolderMember.binding by accessField<WidgetChannelMembersListItemUserBinding>()
 
 private const val BASE_GFONTS = "https://github.com/google/fonts/raw/e324c91423626034f1e10098081182bb88e340db/ofl"
@@ -77,7 +79,7 @@ enum class FontStyle(val url: String?, val isVariable: Boolean = false) {
             11 -> Default
             12 -> ZillaSlab
             else -> {
-                Logger().warn("Decorations/DisplayNames: Unknown font style $value")
+                logger.warn("Unknown font style $value")
                 Default
             }
         }
@@ -102,7 +104,7 @@ enum class EffectStyle(val value: Int) {
             5 -> Pop
             6 -> Glow
             else -> {
-                Logger().warn("Decorations/DisplayNames: Unknown effect style $value")
+                logger.warn("Unknown effect style $value")
                 Solid
             }
         }
@@ -115,7 +117,7 @@ internal object FontHandler {
 
     fun fetch(style: FontStyle, onValue: (Typeface) -> Unit) {
         val subject = cachedTypefaces.getOrPut(style) {
-            Logger("nop").info("fetching")
+            logger.info("fetching $style")
             val subject = BehaviorSubject.k0<Typeface>()
             Utils.threadPool.execute {
                 val path = File(Utils.appActivity.cacheDir, "fonts/${style.name}.ttf")
@@ -123,7 +125,7 @@ internal object FontHandler {
                     path.parentFile?.mkdirs()
                     Http.Request.newDiscordRequest(style.url).execute().saveToFile(path)
                 }
-                Logger("nop").info("fetched to $path")
+                logger.info("fetched $style to $path")
                 val typeface = Typeface.createFromFile(path)
                 if (style.isVariable && Build.VERSION.SDK_INT >= 28) {
                     subject.onNext(Typeface.create(typeface, 700, false))
@@ -222,7 +224,7 @@ internal object DisplayNameStyles {
             val usernameView = binding.j
             val usernameTextView = usernameView.j.c
             state.user.displayNameStyles?.let {
-                Logger("nop").info("${state.user.username}: $it")
+                logger.info("${state.user.username}: $it")
             }
             configureOn(usernameTextView, state.user.displayNameStyles)
         }
