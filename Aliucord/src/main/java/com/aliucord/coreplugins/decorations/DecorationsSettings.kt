@@ -16,7 +16,6 @@ internal object DecorationsSettings {
     private val enableDisplayNamesDelegate = settings.delegate("enableDisplayNames", true)
     val enableDisplayNames by enableDisplayNamesDelegate
 
-    @Suppress("MISSING_DEPENDENCY_CLASS", "MISSING_DEPENDENCY_SUPERCLASS")
     class Sheet : BottomSheet() {
         override fun onViewCreated(view: View, bundle: Bundle?) {
             super.onViewCreated(view, bundle)
