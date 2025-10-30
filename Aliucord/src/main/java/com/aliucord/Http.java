@@ -282,9 +282,19 @@ public class Http {
          * @throws IOException If an I/O exception occurs
          */
         public Request(String url, String method) throws IOException {
+            if (url != null && url.contains("raw.githubusercontent.com")) {
+                url = convertToJsDelivr(url);
+            }
             conn = (HttpURLConnection) new URL(url).openConnection();
             conn.setRequestMethod(method.toUpperCase());
             conn.addRequestProperty("User-Agent", "Aliucord (https://github.com/Aliucord/Aliucord)");
+        }
+
+        private static String convertToJsDelivr(String url) {
+            return url.replaceFirst(
+                "https://raw\\.githubusercontent\\.com/([^/]+)/([^/]+)/(.+)",
+                "https://cdn.jsdelivr.net/gh/$1/$2@$3"
+            );
         }
 
         /**
