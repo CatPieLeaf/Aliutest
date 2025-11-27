@@ -6,6 +6,7 @@ import com.aliucord.coreplugins.decorations.DecorationsSettings
 import com.aliucord.coreplugins.decorations.Decorator
 import com.aliucord.coreplugins.decorations.avatar.AvatarDecorator
 import com.aliucord.coreplugins.decorations.guildtags.GuildTags
+import com.aliucord.coreplugins.decorations.displayname.DisplayNameStyles
 import com.aliucord.entities.CorePlugin
 import com.aliucord.patcher.*
 import com.aliucord.updater.ManagerBuild
@@ -51,6 +52,7 @@ internal class Decorations : CorePlugin(Manifest().apply {
         patchHandlers()
         decorators.forEach { it.patch(patcher) }
         GuildTags.patch(patcher)
+        DisplayNameStyles.patch(patcher)
     }
 
     override fun stop(context: Context) {
