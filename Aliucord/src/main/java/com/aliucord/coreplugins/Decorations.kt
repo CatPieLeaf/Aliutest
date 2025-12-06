@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.AttributeSet
 import com.aliucord.coreplugins.decorations.DecorationsSettings
 import com.aliucord.coreplugins.decorations.Decorator
+import com.aliucord.coreplugins.decorations.avatar.AvatarDecorator
 import com.aliucord.coreplugins.decorations.nameplate.NameplateDecorator
 import com.aliucord.entities.CorePlugin
 import com.aliucord.patcher.*
@@ -38,9 +39,9 @@ internal class Decorations : CorePlugin(Manifest().apply {
         settingsTab = SettingsTab(DecorationsSettings.Sheet::class.java, SettingsTab.Type.BOTTOM_SHEET)
     }
 
-    @SuppressLint("BuildListAdds") // remove when there's stuff to add
     @OptIn(ExperimentalStdlibApi::class)
     private val decorators = buildList<Decorator> {
+        if (DecorationsSettings.enableAvatarDecoration) add(AvatarDecorator())
         if (DecorationsSettings.enableNameplates) add(NameplateDecorator())
     }
 
@@ -133,12 +134,12 @@ internal class Decorations : CorePlugin(Manifest().apply {
     }
 
     private fun patchHandlers() {
-        // onDMsInit
+        // onDMsListInit
         patcher.after<WidgetChannelsListAdapter.ItemChannelPrivate>(
             Int::class.javaPrimitiveType!!,
             WidgetChannelsListAdapter::class.java,
         ) { (_, _: Int, adapter: WidgetChannelsListAdapter) ->
-            decorators.forEach { it.onDMsInit(this, adapter) }
+            decorators.forEach { it.onDMsListInit(this, adapter) }
         }
 
         // onDMsConfigure
@@ -147,7 +148,7 @@ internal class Decorations : CorePlugin(Manifest().apply {
             Int::class.javaPrimitiveType!!,
             ChannelListItem::class.java,
         ) { (_, _: Int, item: ChannelListItemPrivate) ->
-            decorators.forEach { it.onDMsConfigure(this, item) }
+            decorators.forEach { it.onDMsListConfigure(this, item) }
         }
 
         // onMembersListInit

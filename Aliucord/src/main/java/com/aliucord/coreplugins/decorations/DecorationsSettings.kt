@@ -13,6 +13,8 @@ import com.discord.views.CheckedSetting
 internal object DecorationsSettings {
     private val settings = SettingsAPI("Decorations")
 
+    private val enableAvatarDecorationDelegate = settings.delegate("enableAvatarDecorations", true)
+    val enableAvatarDecoration by enableAvatarDecorationDelegate
     private val enableNameplatesDelegate = settings.delegate("enableNameplates", true)
     val enableNameplates by enableNameplatesDelegate
 
@@ -20,6 +22,7 @@ internal object DecorationsSettings {
         override fun onViewCreated(view: View, bundle: Bundle?) {
             super.onViewCreated(view, bundle)
 
+            createSetting("Show avatar decorations", enableAvatarDecorationDelegate).addTo(linearLayout)
             createSetting("Show nameplates", enableNameplatesDelegate).addTo(linearLayout)
         }
 
@@ -32,8 +35,10 @@ internal object DecorationsSettings {
             ).apply {
                 var setting by delegate
                 isChecked = setting
-                setOnCheckedListener { setting = !setting }
-                Utils.promptRestart()
+                setOnCheckedListener {
+                    setting = !setting
+                    Utils.promptRestart()
+                }
             }
         }
     }
