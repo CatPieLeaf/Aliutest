@@ -13,6 +13,7 @@ import com.aliucord.Utils.appContext
 import com.aliucord.coreplugins.*
 import com.aliucord.coreplugins.forwardedmessages.ForwardMessages
 import com.aliucord.coreplugins.channelbrowser.ChannelBrowser
+import com.aliucord.coreplugins.accountstanding.AccountStanding
 import com.aliucord.coreplugins.badges.DiscordBadges
 import com.aliucord.coreplugins.badges.SupporterBadges
 import com.aliucord.coreplugins.plugindownloader.PluginDownloader
@@ -299,6 +300,7 @@ object PluginManager {
     @JvmStatic
     fun loadCorePlugins(context: Context) {
         val corePlugins = arrayOf(
+            AccountStanding(),
             AlignThreads(),
             AppBarFix(),
             ButtonsAPI(),
