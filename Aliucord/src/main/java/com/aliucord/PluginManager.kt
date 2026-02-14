@@ -316,6 +316,7 @@ object PluginManager {
             ForwardedMessages(),
             GifPreviewFix(),
             HideMutedChannelsFix(),
+            JumpToMessageFix(),
             MembersListFix(),
             NewPins(),
             NoTrack(),
