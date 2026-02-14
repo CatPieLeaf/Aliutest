@@ -302,6 +302,7 @@ object PluginManager {
         val corePlugins = arrayOf(
             AccountStanding(),
             AlignThreads(),
+            AuthorizedAppsFix(),
             AppBarFix(),
             ButtonsAPI(),
             ChannelBrowser(),
